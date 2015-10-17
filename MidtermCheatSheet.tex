@@ -1,0 +1,368 @@
+\documentclass[10pt,landscape]{article}
+\usepackage{multicol}
+\usepackage{calc}
+\usepackage{ifthen}
+\usepackage[landscape]{geometry}
+\usepackage{amsmath,amsthm,amsfonts,amssymb}
+\usepackage{color,graphicx,overpic}
+\usepackage{hyperref}
+
+
+\pdfinfo{
+  /Title (example.pdf)
+  /Creator (TeX)
+  /Producer (pdfTeX 1.40.0)
+  /Author (David Wihl)
+  /Subject (Cheat Sheet)
+  /Keywords (pdflatex, latex,pdftex,tex)}
+
+% This sets page margins to .5 inch if using letter paper, and to 1cm
+% if using A4 paper. (This probably isn't strictly necessary.)
+% If using another size paper, use default 1cm margins.
+\ifthenelse{\lengthtest { \paperwidth = 11in}}
+    { \geometry{top=.5in,left=.5in,right=.5in,bottom=.5in} }
+    {\ifthenelse{ \lengthtest{ \paperwidth = 297mm}}
+        {\geometry{top=1cm,left=1cm,right=1cm,bottom=1cm} }
+        {\geometry{top=1cm,left=1cm,right=1cm,bottom=1cm} }
+    }
+
+% Turn off header and footer
+\pagestyle{empty}
+
+% Redefine section commands to use less space
+\makeatletter
+\renewcommand{\section}{\@startsection{section}{1}{0mm}%
+                                {-1ex plus -.5ex minus -.2ex}%
+                                {0.5ex plus .2ex}%x
+                                {\normalfont\large\bfseries}}
+\renewcommand{\subsection}{\@startsection{subsection}{2}{0mm}%
+                                {-1explus -.5ex minus -.2ex}%
+                                {0.5ex plus .2ex}%
+                                {\normalfont\normalsize\bfseries}}
+\renewcommand{\subsubsection}{\@startsection{subsubsection}{3}{0mm}%
+                                {-1ex plus -.5ex minus -.2ex}%
+                                {1ex plus .2ex}%
+                                {\normalfont\small\bfseries}}
+\makeatother
+
+\newcommand{\overbar}[1]{\mkern 1.5mu\overline{\mkern-1.5mu#1\mkern-1.5mu}\mkern 1.5mu}
+
+
+% Define BibTeX command
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+
+% Don't print section numbers
+\setcounter{secnumdepth}{0}
+
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt plus 0.5ex}
+
+%My Environments
+\newtheorem{example}[section]{Example}
+% -----------------------------------------------------------------------
+
+\begin{document}
+\raggedright
+\footnotesize
+\begin{multicols*}{3}
+
+
+% multicol parameters
+% These lengths are set only within the two main columns
+%\setlength{\columnseprule}{0.25pt}
+\setlength{\premulticols}{1pt}
+\setlength{\postmulticols}{1pt}
+\setlength{\multicolsep}{1pt}
+\setlength{\columnsep}{2pt}
+\setlength{\columnseprule}{1pt}
+
+
+\subsubsection{Basics}
+
+\begin{tabular}{| c | c | c| }
+\hline
+ & Sample statistic &  Population Parameter \\
+ \hline
+ Mean & $\overbar{x}$ & $\mu$ \\
+ Variance & $s^2$ & $\sigma^2$ \\
+ Correlation & $r$ & $\rho$ \\
+  Noise & $e_i$ & $\epsilon_i$ \\
+\hline
+& Guess & True, but unknown \\
+\hline
+\end{tabular}
+
+The Mean, Variance and StdDev are subject to outliers.
+\begin{align*}
+\overbar{x} =& \frac{1}{n} \sum\limits_{i=1}^n x_i \\
+\mu = E(W) =& E(a + bX) = a + bE(X)\\
+\sigma^2 = Var(X) =& E[X^2] - \mu_x^2\\
+s^2 =& \sum\limits_{all\ i} \frac{(x_i - \overbar{x})^2}{n-1}\\
+\sigma = StdDev(X) =& \sqrt{\sigma^2}\\
+Var(X + c) =& Var(X)\\
+Var(cX) =& c^2Var(X)\\
+Var(X+Y) \ne& Var(X) + Var(Y)\\
+Var(X + Y) =& Var(X - Y)\\
+Var(X) =& E[(X - \mu)^2] \\
+Var(X) =& E(X^2) - E(X)^2 = E(X - E(X))^2\\
+\end{align*}
+Quartiles split the data into 4 equal groups by number of values, or 25\% percentiles.
+Q2 is the median.
+
+
+\subsubsection{Covariance and Correlation}
+Covariance gives direction.\\
+Correlation gives direction and strength.\\
+Both are \textit{linear}.
+\begin{align*}
+Cov(X, Y) =& \frac{1}{N} \sum\limits_{i=1}^{N} {(x_i - \overbar{x})(y_i - \overbar{y})} \\
+Cor =& \frac{Cov}{\sigma_x \cdot \sigma_y}\\
+\end{align*}
+Most general combination of random variables:
+\begin{align*}
+E((a + bX) + (c_dY)) =& a + bE(X) + c + dE(Y)\\
+Var((a + bX) + (c + dY) =& b^2Var(X) + d^2Var(Y) + 2bdCov(X,Y)\\
+\end{align*}
+
+
+\subsubsection{Probabilities}
+$ 0 \leq $ All probabilities $ \leq 1 $\\
+\textit{Mutually exclusive and Exhaustive}\\
+\begin{align*}
+P(\overbar{A}) =& 1 - P(A)\\
+P(A \text{ or } B) =& P(A) + P(B) - P(A \text{ and } B)\\
+P(A \vert B) =& \frac{P(A \text{ and } B)}{P(B)}\\
+\end{align*}
+Joint vs. Marginal probabilities\\
+Independent if $P(A\vert B) = P(A)$\\
+For Independent only: $P(E \text{ and } F) = P(E)\cdot P(F)$\\
+\begin{tabular}{| c | c | c |}
+
+\hline
+&B &$\overbar{B}$\\
+\hline
+A & $P(A and B) = P(B)P(A \vert B)$ & $P(A and \overbar{B}) = P(\overbar{B})P(A \vert \overbar{B})$\\
+$\overbar{A}$ & $P(\overbar{A} and B) = P(\overbar{A})P(B\vert \overbar{A})$ & $ P(\overbar{A}  and \overbar{B}) = P(\overbar{A})P(\overbar{B} \vert \overbar{A})$ \\
+\hline
+\end{tabular}
+
+\begin{tabular}{| c | c |}
+\hline
+all success & $p^n$\\
+all failure & $(1-p)^n$\\
+at least one failure & $1-p^n$\\
+at least one success & $1 - (1-p)^n$\\
+\hline
+\end{tabular}
+
+
+\subsubsection{Random Variables}
+\begin{align*}
+P(X \le x) \rightarrow& CDF\\
+E(cX) =& c\cdot E(X)\\
+E(X+c) =& E(X) + c\\
+E(X+Y) =& E(X) + E(Y)\\
+\end{align*}
+
+
+\subsubsection{All Things $\chi^2$}
+
+\begin{align*}
+\chi^2_1 =& Z^2 \\
+\chi^2_n =& \sum\limits_{i=1}^n Z^2 \\
+t_n =& \frac{Z} {\sqrt{\chi^2_n / n} } \\
+F_{n,m} =& \frac{ \chi^2_n / n} { \chi^2_m / m } \\
+\chi^2_{n+m} =& \chi^2_n + \chi^2_m \\
+\frac{(n-1) S^2} {\sigma^2} \sim& X^2_{df = n-1} \\
+\end{align*}
+
+\subsubsection{Bias of an Estimator}
+In practice $n$ has to relatively much larger like $> 100$.
+
+
+
+Guesses should be \textit{unbiased} and have \textit{minimum variance}. MVUE (Minimum Variance, Unbiased Estimates).
+\[
+bias(\hat{\theta}) = E(\hat{\theta}) - \theta
+\]
+Unbiased if $bias = 0$ (expected value equals true, not a particular value of $\overbar{x}$). 
+
+For samples, we divide by $n-1$ instead of $n$ to make an unbiased estimator. The guess would otherwise be too low.
+\[
+E(\overbar{x}) = \sum\limits_{i=1}^{\infty} x_i p_i = \mu
+\]
+\[
+E(s^2) = \sigma^2
+\]
+\begin{align*}
+E[X + c] =& E[X] + c\\
+E[X + Y] =& E[X] + E[Y]\\
+E[aX] =& a E[X]\\
+E[aX + bY + c] =& aE[X] + bE[Y] +c\\
+\end{align*}
+Example: Roulette has a \$1 bet with a \$35 payoff for $\frac{1}{38}$ odds.
+\[
+E[\text{gain from a \$1 bet}] = -\$1 \cdot \frac{37}{38} + \$35 \cdot \frac{1}{38} = -\$0.0526
+\]
+
+\subsection{Hypothesis Test - General}
+The purpose of hypothesis testing is to help the researcher reach a conclusion about a population by examining the data
+contained in a sample.
+
+$H_0$ is default position, the status quo. It requires significant evidence to be disproven.
+
+\begin{tabular}{ c  c }
+Hypotheses & Decision Rule \\
+\hline
+$H_0 : \mu = \mu_0$ \\      $H_a : \mu \neq \mu_0$ & If $|t_{stat}| > 1.96$, reject $H_0$ \\
+ & \\
+$H_0 : \mu = \mu_0$ \\ $H_a : \mu < \mu_0$      & If $t_{stat} < -1.64$, reject $H_0$ \\
+ & \\
+$H_0 : \mu = \mu_0$ \\ $H_a : \mu > \mu_0$      & If $t_{stat} > 1.64$, reject $H_0$ \\
+\end{tabular}
+
+We use 1.96 because it is 2.5\% on either side. We use 1.64 because it is 5\% on a single side.
+
+\subsubsection{Hypothesis Test - Mean}
+
+Calculation by hand using a $t$ test:
+\begin{align*}
+t_{stat} =& \frac{ \overbar{x} - \mu_0  } { s / \sqrt{n}  } \\
+\end{align*}
+
+\subsection{Types of Errors}
+\begin{description}
+\item[Type I]the null hypothesis is rejected when it is true
+\item[Type II] the null hypothesis is accepted when it is false
+\end{description}
+$\alpha$ is \textit{level of significance} - probability of making a Type I error. The greater the cost of an error, the smaller $\alpha$ should be.
+$\beta$ is the probability of making a Type II error. There is an inverse relation between Type I and II errors. Reducing one increases the other. The only way to reduce both is to increase $n$ the sample size.
+
+\break
+
+\subsubsection{Comparing Two Sets - General}
+The null hypothesis is always $H_0 : p_1 = p_2$.
+
+ \begin{tabular}{ c  c c }
+Hypotheses & Decision Rule & Stata Diff $(p_1 - p_2)$ \\
+\hline
+$H_0 : p_1 = p_2$ \\      $H_a : p_1 \neq p_2$ & If $|T| > 1.96$, reject $H_0$ & $H_a: \text{ diff } \neq 0$\\
+ & \\
+$H_0 : p_1 = p_2$ \\ $H_a : p_1 < p_2$      & If $T < -1.64$, reject $H_0$ & $H_a: \text{ diff } < 0$\\
+ & \\
+$H_0 : p_1 = p_2$ \\ $H_a : p_1 > p_2$      & If $T > 1.64$, reject $H_0$ & $H_a: \text{ diff } > 0$\\
+\end{tabular}
+
+If the interval is all positive then $\hat{p}_1 > \hat{p}_2$.
+If the interval is all negative then $\hat{p}_1 < \hat{p}_2$.
+If the interval spans 0, then one is not significantly bigger than the other (or cannot be determined). 
+As long as $n > 30$, it doesn't matter if the sample size is different between the random variables.
+
+
+\subsubsection{Comparing Two Proportions}
+\[
+Var(\hat{p}_1 - \hat{p}_2) = \frac{\hat{p}_1(1-\hat{p}_1)}{n_1} + \frac{\hat{p}_2(1-\hat{p}_2)}{n_2} 
+\]
+
+The 95\% confidence interval for $p_1-p_2$ is:
+\[
+(\hat{p}_1 - \hat{p}_2) \pm 1.96 \sqrt{\frac{\hat{p}_1(1-\hat{p}_1)}{n_1} + \frac{\hat{p}_2(1-\hat{p}_2)}{n_2}   }
+\]
+
+Decision Rules for Testing Two Proportions:
+\[
+T = \frac{(\hat{p}_1 - \hat{p}_2) }  { \sqrt{ \hat{p}(1-\hat{p}) (\frac{1}{n_1} + \frac{1}{n_2}) }} \text{, where } \hat{p} = \frac{n_1\hat{p}_1 + n_2\hat{p_2} } {n_1 + n_2 }
+\]
+$\hat{p}$ is called the \textit{pooled proportion}.
+
+\subsubsection{Comparing Two Means}
+Requirements:
+\begin{enumerate}
+\item{$\sigma_1$ and $\sigma_2$ are unknown. No assumption made about their equality.}
+\item{The two samples are independent.}
+\item{Both samples are simple random samples.}
+\item{The two samples size are both large (ie. $> 30$) or both populations have normal distributions.}
+\end{enumerate}
+
+A confidence interval for $(\mu_1 - \mu_2 )$ is
+\[
+(\overbar{x}_1 - \overbar{x}_2) \pm 1.96 \sqrt{ \frac{s^2_1 } {n_1 } + \frac{s^2_2 } {n_2 }     }
+\]
+
+\subsubsection{Comparing Two Normal Distributions}
+
+\begin{align*}
+A \sim& \mathcal{N}(\mu_A, \sigma_A^2) \\
+B \sim& \mathcal{N}(\mu_B, \sigma_B^2) \\
+\end{align*}
+Find $P(A < B + c)$:
+\begin{align*}
+P&(A - B - c < 0)\\
+(A - B - c) \sim& \mathcal{N}(\mu_A - \mu_B - c, \sigma_A^2 + \sigma_B^2 - 2Cov(A,B)\\
+P&(X = A - B - c > 0) \\
+\end{align*}
+then Z-score
+
+\subsubsection{Matched Pairs}
+
+This when there are two samples that are \textbf{not} independent, e.g. Weight Watchers, Before / After or matched, shared characteristics.
+
+Is the data matched or independent?
+
+If we don't take into account the match, the results are wrong.
+
+To account for this, take the difference between $\overbar{X}_1 - \overbar{X}_2$ and then do a hypothesis test on the \textit{difference}. 
+\begin{align*}
+H_0 : & \mu_D = 0 \\
+H_a : & \mu_D > 0 \\
+\end{align*}
+
+
+
+\subsubsection{Uniform Distribution}
+\begin{align*}
+E(X) =& \frac{(a+b)}{2}\\
+Var(X) =& \frac{(b-a)^2}{12} \\
+\end{align*}
+\ \ $y$ axis should be a fraction to make area $=1$
+
+\subsubsection{Normal Distribution}
+\begin{align*}
+X \sim& \mathcal{N}(\mu,\sigma^2)\\
+Z = &\frac{X - \mu}{\sigma} \sim \mathcal{N}(0,1)\\
+X = &\sigma Z + \mu \\
+P(a \leq X \leq b) =& P[(a-\mu) \leq (X-\mu) \leq (b-\mu)]\\
+	= & P[\frac{(a-\mu)}{\sigma} \leq \frac{(X-\mu)} {\sigma} \leq \frac {(b-\mu)} {\sigma} ]\\
+	= & P[\frac{(a-\mu)}{\sigma} \leq Z \leq \frac {(b-\mu)} {\sigma} ]\\
+\end{align*}
+
+
+\subsubsection{Binomial Distribution}
+\begin{itemize}
+\item{$n$ independent trials}
+\item{binary result}
+\item{same probability of success}
+\item{total number of successes}
+\end{itemize}
+\begin{align*}
+X \sim& B(n,p)\\
+\binom{n}{x} =& \frac{n!}{x!(n-x)!}\\
+P(X=x) =& \frac{n!}{x!(n-x)!}p^xq^{(n-x)}\\
+\mu_x = E(X) =& n \cdot p\\
+\sigma^2 = Var(X) =& n \cdot p \cdot q = n \cdot p \cdot (1-p)\\
+\end{align*}
+Shape of distribution depends on $p,n$.\\
+Small $p$, left skewed. Large $p$, right skewed
+
+
+
+
+% You can even have references
+%\rule{0.3\linewidth}{0.25pt}
+\scriptsize
+\bibliographystyle{abstract}
+\bibliography{refFile}
+\end{multicols*}
+\end{document}
