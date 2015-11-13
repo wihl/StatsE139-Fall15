@@ -85,8 +85,8 @@
 \hline
  & Sample statistic &  Population Parameter \\
  \hline
- Mean & $\overbar{x}$ & $\mu$ \\
- Variance & $s^2$ & $\sigma^2$ \\
+ Mean & $\overbar{X}$ & $\mu$ \\
+ Variance & $S^2$ & $\sigma^2$ \\
  Correlation & $r$ & $\rho$ \\
   Noise & $e_i$ & $\epsilon_i$ \\
 \hline
@@ -96,17 +96,21 @@
 
 The Mean, Variance and StdDev are subject to outliers.
 \begin{align*}
-\overbar{x} =& \frac{1}{n} \sum\limits_{i=1}^n x_i \\
+\overbar{X} =& \frac{1}{n} \sum\limits_{i=1}^n x_i \\
 \mu = E(W) =& E(a + bX) = a + bE(X)\\
 \sigma^2 = Var(X) =& E[X^2] - \mu_x^2\\
-s^2 =& \sum\limits_{all\ i} \frac{(x_i - \overbar{x})^2}{n-1}\\
+S^2 =& \sum\limits_{all\ i} \frac{(X_i - \overbar{X})^2}{n-1}\\
 \sigma = StdDev(X) =& \sqrt{\sigma^2}\\
+Var(X) =& E[(X - \mu)^2]  = E(X^2) - \mu^2\\
+	=& \sum_{all x} (x - \mu_x)^2 P(X = x)\\
+	=& E(X^2) - E(X)^2 = E(X - E(X))^2\\
 Var(X + c) =& Var(X)\\
 Var(cX) =& c^2Var(X)\\
+Var(\bar{X}) =& \frac{\sigma^2}{n} \\
+ \text{If X,Y are dependent}\\
 Var(X+Y) \ne& Var(X) + Var(Y)\\
 Var(X + Y) =& Var(X - Y)\\
-Var(X) =& E[(X - \mu)^2] \\
-Var(X) =& E(X^2) - E(X)^2 = E(X - E(X))^2\\
+Var((a + bX) + (c + dY) =& b^2Var(X) + d^2Var(Y) + 2bdCov(X,Y)\\
 \end{align*}
 Quartiles split the data into 4 equal groups by number of values, or 25\% percentiles.
 Q2 is the median.
@@ -119,11 +123,6 @@ Both are \textit{linear}.
 \begin{align*}
 Cov(X, Y) =& \frac{1}{N} \sum\limits_{i=1}^{N} {(x_i - \overbar{x})(y_i - \overbar{y})} \\
 Cor =& \frac{Cov}{\sigma_x \cdot \sigma_y}\\
-\end{align*}
-Most general combination of random variables:
-\begin{align*}
-E((a + bX) + (c_dY)) =& a + bE(X) + c + dE(Y)\\
-Var((a + bX) + (c + dY) =& b^2Var(X) + d^2Var(Y) + 2bdCov(X,Y)\\
 \end{align*}
 
 
@@ -167,16 +166,6 @@ E(X+Y) =& E(X) + E(Y)\\
 \end{align*}
 
 
-\subsubsection{All Things $\chi^2$}
-
-\begin{align*}
-\chi^2_1 =& Z^2 \\
-\chi^2_n =& \sum\limits_{i=1}^n Z^2 \\
-t_n =& \frac{Z} {\sqrt{\chi^2_n / n} } \\
-F_{n,m} =& \frac{ \chi^2_n / n} { \chi^2_m / m } \\
-\chi^2_{n+m} =& \chi^2_n + \chi^2_m \\
-\frac{(n-1) S^2} {\sigma^2} \sim& X^2_{df = n-1} \\
-\end{align*}
 
 \subsubsection{Bias of an Estimator}
 In practice $n$ has to relatively much larger like $> 100$.
@@ -191,27 +180,74 @@ Unbiased if $bias = 0$ (expected value equals true, not a particular value of $\
 
 For samples, we divide by $n-1$ instead of $n$ to make an unbiased estimator. The guess would otherwise be too low.
 \[
-E(\overbar{x}) = \sum\limits_{i=1}^{\infty} x_i p_i = \mu
+E(X) = \sum_{all x} xP(X=x) 
 \]
 \[
-E(s^2) = \sigma^2
+E(\overbar{X}) = \sum\limits_{i=1}^{\infty} x_i p_i =  \mu
+\]
+\[
+E(S^2) = \sigma^2
 \]
 \begin{align*}
 E[X + c] =& E[X] + c\\
 E[X + Y] =& E[X] + E[Y]\\
 E[aX] =& a E[X]\\
 E[aX + bY + c] =& aE[X] + bE[Y] +c\\
+E((a + bX) + (c_dY)) =& a + bE(X) + c + dE(Y)\\
 \end{align*}
 Example: Roulette has a \$1 bet with a \$35 payoff for $\frac{1}{38}$ odds.
 \[
 E[\text{gain from a \$1 bet}] = -\$1 \cdot \frac{37}{38} + \$35 \cdot \frac{1}{38} = -\$0.0526
 \]
 
-\subsection{Hypothesis Test - General}
-The purpose of hypothesis testing is to help the researcher reach a conclusion about a population by examining the data
-contained in a sample.
+\subsubsection{All Things $\chi^2$}
 
-$H_0$ is default position, the status quo. It requires significant evidence to be disproven.
+\begin{align*}
+\chi^2_1 =& Z^2 \\
+\chi^2_n =& \sum\limits_{i=1}^n Z^2 \\
+t_n =& \frac{Z} {\sqrt{\chi^2_n / n} } \\
+F_{n,m} =& \frac{ \chi^2_n / n} { \chi^2_m / m } \\
+\chi^2_{n+m} =& \chi^2_n + \chi^2_m \\
+\frac{(n-1) S^2} {\sigma^2} \sim& X^2_{df = n-1} \\
+S^2 = \frac{1}{n-1}\sum\limits_{i=1}^n (X_i - \overbar{x})^2 \sim& \frac{\sigma^2}{n-1}\chi^2_{df=n-1} \\
+\end{align*}
+
+\subsection{The $t$ distribution}
+The $t$ distribution has a slightly wider spread in the tails than Standard Normal. Also known as student-t distribution. This happens when you don't know the
+real $\sigma$ and are forced to use $S$, which is less reliable.
+
+\[
+\overbar{X} \approx N(\mu, \frac{\sigma^2}{n})
+\]
+
+allows us to Z-score
+\[
+Z = \frac{\overbar{X} - \mu}{\sigma / \sqrt{n}}
+\]
+but we don't know $\sigma$ so in practice we use
+\[
+T = \frac{\overbar{X} - \mu}{S / \sqrt{n}}
+\]
+(which has two random variables ($\overbar{X}$ and $S$). Now, take that previous definition of $T$ and add $\sigma/\sqrt{n}$ to the top and bottom:
+
+\begin{align*}
+T =& \frac{\overbar{X} - \mu}{S / \sqrt{n}} \\
+   =&  \frac{(\overbar{X} - \mu) / (\sigma/\sqrt{n})}{(S / \sqrt{n}) / (\sigma/\sqrt{n})}\\
+   =& \frac{Z}{\sqrt{S^2/\sigma^2}}\\
+   =& \frac{Z}{\sqrt{\frac{(n-1)S^2}{(n-1)\sigma^2}}} \\
+ =&  \frac{Z}{\sqrt{\chi^2/df}}\text{, since }\chi^2 = \frac{(n-1)S^2}{\sigma^2}
+\end{align*}
+
+\subsection{Hypothesis Test - General}
+
+\begin{enumerate}
+\item Formulate hypotheses
+\item Calculate test statistic
+\item Calculate $p$-value based on reference distribution of test statistic $|H_0$. \textbf{$p$ value is NOT the probability that the null hypothesis is true.} 
+It is probablity of seeing our data on the null hypothesis. 
+\item Determine conclusion and scope of inference
+\end{enumerate}
+\textbf{Note:} $t$ values are measures of \textit{distance}. $p$ values are measure of \textit{probability}.
 
 \begin{tabular}{ c  c }
 Hypotheses & Decision Rule \\
@@ -223,7 +259,18 @@ $H_0 : \mu = \mu_0$ \\ $H_a : \mu < \mu_0$      & If $t_{stat} < -1.64$, reject 
 $H_0 : \mu = \mu_0$ \\ $H_a : \mu > \mu_0$      & If $t_{stat} > 1.64$, reject $H_0$ \\
 \end{tabular}
 
-We use 1.96 because it is 2.5\% on either side. We use 1.64 because it is 5\% on a single side.
+\textbf{Scope of Inference}: \textbf{Interval Validity}: low when 1) unaccounted confounding factors, 2) ignored missing data 3) noncompliance 4) unverified assumptions
+5) suboptimal method of analysis. Applicable when allocation of units to groups is random.
+ \textbf{External Validity}: high when can be generalized to population. Applicable when selection of units is random.
+
+Assumptions:
+\begin{enumerate}
+\item Observations are \textbf{independent}. This is true if the sample is randomly selected, but false if there is bias in the sampling.
+\item \textbf{Normal Distributions} of the observations. This happens when the sample is large enough (via the Central Limit Theorm) or it is known that the population is normally distributed.
+\end{enumerate}
+
+If these assumptions are not correct, none of the $t$-tests will work correctly.
+
 
 \subsubsection{Hypothesis Test - Mean}
 
@@ -240,26 +287,24 @@ t_{stat} =& \frac{ \overbar{x} - \mu_0  } { s / \sqrt{n}  } \\
 $\alpha$ is \textit{level of significance} - probability of making a Type I error. The greater the cost of an error, the smaller $\alpha$ should be.
 $\beta$ is the probability of making a Type II error. There is an inverse relation between Type I and II errors. Reducing one increases the other. The only way to reduce both is to increase $n$ the sample size.
 
-\break
 
-\subsubsection{Comparing Two Sets - General}
-The null hypothesis is always $H_0 : p_1 = p_2$.
+\subsubsection{Confidence Intervals}
 
- \begin{tabular}{ c  c c }
-Hypotheses & Decision Rule & Stata Diff $(p_1 - p_2)$ \\
-\hline
-$H_0 : p_1 = p_2$ \\      $H_a : p_1 \neq p_2$ & If $|T| > 1.96$, reject $H_0$ & $H_a: \text{ diff } \neq 0$\\
- & \\
-$H_0 : p_1 = p_2$ \\ $H_a : p_1 < p_2$      & If $T < -1.64$, reject $H_0$ & $H_a: \text{ diff } < 0$\\
- & \\
-$H_0 : p_1 = p_2$ \\ $H_a : p_1 > p_2$      & If $T > 1.64$, reject $H_0$ & $H_a: \text{ diff } > 0$\\
-\end{tabular}
+CI is Estimate $\pm$ margin of error or Estimate $\pm$ ($z$ value) $\times$ (SD of estimate).
 
-If the interval is all positive then $\hat{p}_1 > \hat{p}_2$.
-If the interval is all negative then $\hat{p}_1 < \hat{p}_2$.
+\[
+\mu_0 = \overbar{X} \pm t\cdot s/\sqrt{n}
+\]
+
 If the interval spans 0, then one is not significantly bigger than the other (or cannot be determined). 
 As long as $n > 30$, it doesn't matter if the sample size is different between the random variables.
 
+To find the 95\% Confidence Internval for the \textbf{true mean} $\mu$:
+\[
+\overbar{x} \pm t^* (s/\sqrt{n})
+\]
+
+$t^*$ has to be looked up
 
 \subsubsection{Comparing Two Proportions}
 \[
@@ -347,7 +392,7 @@ P(a \leq X \leq b) =& P[(a-\mu) \leq (X-\mu) \leq (b-\mu)]\\
 \item{total number of successes}
 \end{itemize}
 \begin{align*}
-X \sim& B(n,p)\\
+X \sim& Bin(n,p)\\
 \binom{n}{x} =& \frac{n!}{x!(n-x)!}\\
 P(X=x) =& \frac{n!}{x!(n-x)!}p^xq^{(n-x)}\\
 \mu_x = E(X) =& n \cdot p\\
@@ -357,6 +402,59 @@ Shape of distribution depends on $p,n$.\\
 Small $p$, left skewed. Large $p$, right skewed
 
 
+\subsection{Fisher's Randomization Test}
+
+Randomization Test is for experiments - for casual inference.
+
+Permutation Tests are for observational studies - for generalization.
+
+Fisher Randomization Test is a \textit{distribution free} test for treatment effect in \textbf{randomized experiments}. No assumption as to the underlying distribution has to be made. Generally, is $\mu_1 = \mu_2$? 
+
+The only assumption is Additive Treatment Effect ($\delta$):
+\[
+Y_{c,i} = Y_{v,i} + \delta
+\]
+
+$H_0: \delta = 0$, ie  zero treatment effect for all units. Each unit's outcome is the same regardless of the treatment assigned. So the distribution would be identical in both groups.
+
+$H_a: \delta \neq 0$ non-zero treatment effect for ALL units. 
+
+Assumptions:
+\begin{itemize}
+\item Random assignment to groups
+\item Under $H_0$, \textit{independence, interchangability} of study units. 
+\end{itemize}
+
+\subsubsection{Test Statistic}
+
+Difference of outcomes of the two groups:
+\[
+\hat{\delta} = \overbar{Y}_c - \overbar{Y}_v
+\]
+could also use difference between the medians.
+
+\textbf{Randomization Distribution} is the reference distribution of a test statistic in a randomization test,
+where variation is due to random assignment of the treatment.
+
+Procedure:
+$Y$ is values of malaria. $X$ is if someone is vaccinated. Simulate a new $X^*$ with the same values as $X$ but \textit{in a different order}, leaving the same $Y$. Repeat multiple times to simulate and build the histogram. This will show if the distribution is extreme.
+
+The maximum number of possible simulations is the binomial distribution:
+\[{t \choose s}\]
+where $t$ is the total number of study units and $s$ is the number where the effect was shown.
+
+\subsubsection{Calculating $p$ value}
+ 
+The $p$ value is proportion of values above or below the observed test statistic.
+\begin{align*}
+\hat{\delta} =& 0.5\\
+p =& P(\overbar{Y}_c - \overbar{Y}_v \geq \overbar{y}_c - \overbar{y}_v) \\
+   =& P(\overbar{Y}_c - \overbar{Y}_v \geq 0.5) = 0.029
+\end{align*}
+
+so there is sufficient evidence to reject the null.
+
+Scope of inference: Internal Validity maybe not if the same hospital. External validity: possibly not, as these were volunteers.
 
 
 % You can even have references
