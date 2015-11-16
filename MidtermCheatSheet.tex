@@ -478,13 +478,13 @@ $\hat{p}$ is called the \textit{pooled proportion}.
 A \sim& \mathcal{N}(\mu_A, \sigma_A^2) \\
 B \sim& \mathcal{N}(\mu_B, \sigma_B^2) \\
 \end{align*}
-Find $P(A < B + c)$:
+Find $P(A < B + c)$ then Z-score:
 \begin{align*}
 P&(A - B - c < 0)\\
 (A - B - c) \sim& \mathcal{N}(\mu_A - \mu_B - c, \sigma_A^2 + \sigma_B^2 - 2Cov(A,B)\\
 P&(X = A - B - c > 0) \\
 \end{align*}
-then Z-score
+
 
 
 \subsection{Assumptions}
@@ -530,8 +530,177 @@ Reference dist: Small $n: K \sim Binom(m, 0.5)$. Large $n: K \sim N(m/2, m/4)$. 
 
 \subsubsection {Signed Rank Test}
 
+Hypotheses: $H_0 : $ rank of magnitude of within pair differences is unrelated to the sign of the difference.
+
+$D_i = Y_i - X_i$, and the calc Rank$(|D_i|)$ for all $n$ pairs.
+
+Test stat: $W = \sum_{i=1}^n Ranks_{i|D_i > 0}$. 
+
+Reference dist: small $n$: use permutation. Large $n: W \sim N(m(m+1)/4, m(m+1)(2m+1)/24)$
+
+$m$ is the number of non-zero observations. Like the sign test, \textbf{we throw away the zeros}.
+
+\subsection{Power}
+
+Power increases with: larger $n$, moving alternate distrib further away, smaller $\sigma$ or $S$.
+
+\[
+n \geq \bigg(\frac{ (z^*) (\sigma) } {m}\bigg)^2
+\]
+\[
+n \geq \bigg(\frac{\sigma(|z_{a/2}| + |z_{\beta}|)}{\mu_a - \mu_0}   \bigg)^2
+\]
+
+Bonferroni: $\alpha^* = \frac{\alpha}{tests}$. Prob of error: $1 - (1-\alpha)^I$
+
+\subsection{ANOVA}
+Comparing 3 or more groups. $F$-stat to test $H_0$
+\[
+F = \frac{MSB}{MSW} = \frac{SSB/df_B}{SSW/df_W} = \frac {SSB/(I-1)}  {SSW/(N-I)}
+\]
+Errors between groups: how far away is the variance of one group from all the other groups?
+\[
+SSM = SSB = \sum_{i=1}^I \sum_{j=1}^{n_i} (\bar{Y}_i - \bar{Y})^2 = \sum_{i=1}^I n_i (\bar{Y}_i - \bar{Y})^2
+\]
+with degrees of freedom $df_M = I - 1$.
+
+Errors within groups: how far away is the variance within the group?
+\[
+SSE = SSW = \sum_{i=1}^I \sum_{j=1}^{n_i} (Y_{ij} - \bar{Y}_i)^2 = \sum_{i=1}^I (n_i - 1)S^2_i
+\]
+with degrees of freedom: $df_E = n - I$
+
+There are two ways of determining which group differ. There are a number of techniques. 1) measure all
+pair-wise combinations, 2) use contrasts.
+
+Steps in a Complete ANOVA Procedure:
+\begin{enumerate}
+\item Examine the data, checking assumptions
+\item If possible, formulate in advance some working (alternative)
+hypotheses about how the population group means might differ. For example, if we are examining 
+a control group vs two study groups, use
+\[
+H_0 : \mu_1 - \frac{1}{2}(\mu_2 + \mu_3) = 0
+\]
+This is called a \textbf{contrast}, which is a linear combination of $\mu$'s. The coefficents sum up to 0.
+If the coefficients did not sum up to 0, then the null hypothesis would not hold. If the groups had different 
+sample sizes, you could make the coefficient a weighting factor to adjust for this.
+
+\item Check the evidence against the global null hypothesis of no
+differences among the groups by calculating the F-test, or by testing all pairwise combinations. 
+\item If the F-test is significant (that is, if it leads to a rejection of the
+null hypothesis of equal population group means):
+\begin{itemize}
+\item Test the individual hypotheses specified at the second step
+\item If there was not enough information to formulate working hypotheses, test all pairwise comparisons of means, adjusting for multiple comparisons (example also coming)
+\end{itemize}
+\end{enumerate}
+\begin{tabular}{| c | c | c | c | c |}
+\hline
+Source & SS & DF & MS & F \\
+\hline
+Groups (between) & SSB & $I-1$ & $S^2_B = SSB/DFB$ & $F$ = MSB/MSW \\
+Error (within) & SSW & $n-I$ & $S^2_w = SSW/DFW$ & \\
+\hline
+Total & SST & $n-1$ & SST/DFT & \\
+\hline
+\end{tabular}
+
+\subsubsection{Contrast Test Hypothesis}
+This is similar to a pooled test (we are assuming the variance among each group is the same):
+\begin{align*}
+H_0 :& \psi = 0 \\
+H_a :& \psi \neq 0\\
+T =& \cfrac{\sum a_i \overbar{Y}_i } {S_p \sqrt{\sum \frac{a_i^2}{n_i} } }\\
+\end{align*}
+This $t$-test has a $t$ distribution with degrees of freedom associated with $S_p$ under $H_0$. The 
+test can be 1- or 2-sided.
+
+For this $t$-test, what is the variance? If the separate groups were not independent, it would be
+$Var(X+Y+Z) = Var(X) + Var(Y) + Var(Z) + 2\cdot Cov(X,Y) + 2\cdot Cov(X,Z) + 2\cdot Cov(Y,Z)$. 
+However, we are assuming that the variance of each of the groups is independent, so 
+$Var(X+ Y + Z) = Var(X) + Var(Y) + Var(Z)$.
+
+Recall $\psi = \mu_1 + \frac{1}{2}(\mu_2 + \mu_3)$. The variance would be 
+\begin{align*}
+Var =& Var(\overbar{Y}_1) + Var(-\frac{1}{2} \overbar{Y}_2) + Var(-\frac{1}{2}\overbar{Y}_3)\\
+	=& \sigma^2\bigg(\frac{1}{n_1} + \frac{(-1/2)^2}{n_2} + \frac{(-1/2)^2}{n_3}  \bigg) \\
+E(S_p^2) =& \sigma^2 \\
+sd =& S_p \sqrt{(\frac{1}{n_1} + \frac{(-1/2)^2}{n_2} + \frac{(-1/2)^2}{n_3}  }\\
+T =& \cfrac{\bar{Y}_1 - \frac{1}{2}(\bar{Y}_2 + \bar{Y}_3) } { S_p \sqrt{(\frac{1}{n_1} + \frac{(-1/2)^2}{n_2} + \frac{(-1/2)^2}{n_3}  }} \\
+S^2_p =& SSE / df_E  \text{ (denom of $F$ test)}\\
+\end{align*}
 
 
+\subsubsection{Multiple Comparisons}
+
+Since contrast tests involves multiple comparisons, we have an inflated risk of type I errors. This can
+be corrected using the Bonferroni correction, where $\alpha^* = \alpha / $(number of tests).
+
+For $N$ simultaneous tests that are independent, the overall type I error (ie. the probability of at least
+one type I error among N tests) is $1 - (1 - \alpha)^N$.
+
+For $N$ simultaneous tests that are perfectly positively dependent (if one rejects, then the other
+combinations are likely to reject as well, even if the groups are independent), the overall type I error is just $\alpha$.
+
+For $N$ simultaneous tests that have unknown dependence, the maximum overall type I error is $min(N\alpha, 1)$ (since it is a probability, it can't be $> 1$), where
+
+\[
+\alpha \leq 1- (1-\alpha)^N \leq N \alpha
+\]
+
+
+\subsubsection{Tukey Honest Significant Difference (HSD)}
+
+This is the correct adjustment under ANOVA. Basic idea: consider the \textit{largest difference} between any
+two sample means for for $I$ groups. 
+
+Intuition: There are $\bar{Y}_1, \bar{Y}_2, \ldots, \bar{Y}_I$ sample means. To do a pairwise comparison
+would generate ${I \choose 2}$ 2 sample $t$-tests. We are going to reject one of these with 5\% comparison
+rates. So it reduces to only have to check the ratio of max and min sample means.
+
+It is appropriate when interested in differences between all pairs of group
+means. We assume normality, equal variances, equal sample sizes($\bar{n}$), and equal means.
+
+\[
+Q = \frac{\bar{Y}_{max} - \bar{Y}_{min}}  {S_p \sqrt{ \bar{n}}} \sim q(1 - \alpha, n-I) \text{, where } n = \bar{n}I
+\]
+
+The Tukey distribution $q$ is called the \textbf{Studentized Range Distribution}. In R, use \texttt{qtukey()} to obtain quantiles.
+
+The margin of for the Confidence Interval (This is also used for the critical value as part of the $t$-test):
+\[
+\bigg(\frac{q(1-\alpha,I,n-I) } {\sqrt{2} }    \bigg) SE \text{, where }SE = S_p \sqrt{\frac{1}{\bar{n}} + \frac{1}{\bar{n}} }
+\]
+
+
+
+
+\subsubsection{Two-way and multi-way ANOVA}
+
+One way ANOVA - onlyone factor affecting the groups.
+
+Two way ANOVA - multiple grouping variables to compare groups.
+
+This can be reduced to boxplot
+
+\textbf{Interactive effect}: when one variable changes the other variable. E.g. by going from
+sophomore to junior, the number of texts would change.  degrees of freedom = $(I_1 -1)*(I_2  -1 ) = (4-1)*(2-1) = 3$
+
+\subsection{Kruskal-Wallis Test}
+This is a form of ANOVA on Ranks rather than $t$-test. The KW test is just an extension of the Wilcoxon Rank Sum test to 3 or more groups. The same procedure as other rank tests:
+
+\begin{enumerate}
+\item Rank all the combined data ignoring groups from 1 to $N$ (treating them all like one sample).
+For any ties, average those ranks.
+\item Calculate an $F$ like $\chi^2$ test statistic:
+\[
+K = (N -1) \frac {\sum_{i=1}^I n_i (\bar{R}_i - \bar{R})^2 }  
+			{ \sum_{i=1}^I\sum_{j=1}^{n_i} (R_{ij} - \bar{R})^2    } \sim \chi^2_{i-1}
+\]
+The hypothesis is like the Rank-Sum test: the quantiles in the group are all the same.
+\end{enumerate} It is $\chi^2$ because the numerator and denomiator are tightly related. Only the numerator is a random 
+variable.
 
 
 % You can even have references
