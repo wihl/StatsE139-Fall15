@@ -347,7 +347,7 @@ Scope of inference: Internal Validity maybe not if the same hospital. External v
 For observational studies, comparing two groups - for generalization. Means of observations are presumed the same $E(Y_{1,i}) = \mu_1, E(Y_{2,j}) = \mu_2. H_0  : \mu_1 = \mu_2$.
 
 Test stat: $\hat{D} = \bar{Y}_i - \bar{Y}_1$. Reference distrib by simulation. 
-Assumes independence of study units and groups, nonparametric. Does assume similar shapes and spreads.
+Assumes independence of study units and groups, nonparametric, similar shapes and spreads.
 
 \subsubsection{All Things $\chi^2$}
 
@@ -415,6 +415,7 @@ $t^*$ has to be looked up based on the reference distrib.
 \begin{description}
 \item[Type I]the null hypothesis is rejected when it is true
 \item[Type II] the null hypothesis is accepted when it is false
+\item[Power] the probability of correctly rejecting the null when the alternative is actually true.
 \end{description}
 $\alpha$ is \textit{level of significance} - probability of making a Type I error. The greater the cost of an error, the smaller $\alpha$ should be.
 $\beta$ is the probability of making a Type II error. There is an inverse relation between Type I and II errors. Reducing one increases the other. The only way to reduce both is to increase $n$ the sample size.
@@ -442,8 +443,19 @@ CI: & (\bar{x}_1 = \bar{x}_2) \pm t^* \bigg(S_p \sqrt{\frac{S^2_1}{n_1} + \frac{
 
 Advantage Pooling: slightly more power to detect a difference. Disadvantage pooling: extra assumption could be wrong, with a high type I error rate.
 
+\subsection{Paired Test}
+
+This when there are two samples that are \textbf{not} independent, e.g. Weight Watchers, Before / After or matched, shared characteristics. 
+Is the data matched or independent?
+If we don't take into account the match, the results are wrong.
+Applies when there are two obs for each study unit. 
+
+To account for this, take the difference between $\overbar{X}_1 - \overbar{X}_2$ and then do a hypothesis test on the \textit{difference}. 
+
+Basically it is a one-sample test on the differences. $H_0: \mu_D = 0$. $T \sim t_{df = n_D - 1}$
 
 \subsubsection{Comparing Two Proportions}
+(Not really covered in this class, but may be useful).
 \[
 Var(\hat{p}_1 - \hat{p}_2) = \frac{\hat{p}_1(1-\hat{p}_1)}{n_1} + \frac{\hat{p}_2(1-\hat{p}_2)}{n_2} 
 \]
@@ -474,24 +486,49 @@ P&(X = A - B - c > 0) \\
 \end{align*}
 then Z-score
 
-\subsubsection{Matched Pairs}
-
-This when there are two samples that are \textbf{not} independent, e.g. Weight Watchers, Before / After or matched, shared characteristics.
-
-Is the data matched or independent?
-
-If we don't take into account the match, the results are wrong.
-
-To account for this, take the difference between $\overbar{X}_1 - \overbar{X}_2$ and then do a hypothesis test on the \textit{difference}. 
-\begin{align*}
-H_0 : & \mu_D = 0 \\
-H_a : & \mu_D > 0 \\
-\end{align*}
 
 \subsection{Assumptions}
 
-Robustness: able to be useful when assumptions are violated. 
+\textbf{Robustness}: able to be useful when assumptions are violated. Check for violations graphically (QQplot, box plot, density) and look at the study design.
+Under the null and correct assumptions, $p$-values should be uniformly distributed. $t$-test is very robust when sample sizes are large, or both groups
+have the same size. Not so good when one group is very skewed. Fix with unpooled $t$ test, data transformations, or non-parametric tests.
 
+\subsection{$F$-Distribution and $F$-tests}
+\[
+R = \frac{X/n_x} {Y/n_y} \sim F_{n_x, n_y} 
+\]
+Hypothesis: $H_0 : \sigma^2_x = \sigma^2_y, H_a: \sigma^2_x / \sigma^2_y \neq 1$.
+
+Test statistic:
+\[
+F = \frac{ S^2_X} {S^2_Y } \sim F_{n_x - 1, n_y - 1}
+\]
+
+\subsection{Transformations}
+Purpose: make data more symmetric
+
+If Right skewed, use: $1/Y, log(Y), \sqrt{Y}$. Left skewed: $Y^2, e^Y, (n - Y)$
+
+If done on log scale: 1) be cautious about $\leq 0$. Use ratios of medians as exp(mean) will not be useful. Consider rank transform.
+
+\subsection{Rank Sum Test}
+
+non-parametric, 2 indep. groups. Rank ALL data (2 groups combined) and sum up the ranks in one of the groups. Average ties. $H_0:$ medians are
+the same. Reference distrib: small $n$ simulate like permutation test; large $n$ approx normality if $n_j \geq 10$: 
+\[
+T \sim N(n_x \bar{R}, S^2_R \frac {n_x n_y}{n_x + n_y})
+\]
+
+\subsubsection{Sign Test - Paired Data}
+aka binomial test, nonparametric. Take all the differences
+
+Hypotheses: $H_0 : P(D_i > 0) = P(Y_i > X_i) = 0.5.$
+
+Test stat: $K= \sum_{i=1}^n I(D_i > 0).$ ie. count up the number of times the difference is $> 0 $.
+
+Reference dist: Small $n: K \sim Binom(m, 0.5)$. Large $n: K \sim N(m/2, m/4)$. Large is considered $np > 10$ and $n(1-p) > 10$.
+
+\subsubsection {Signed Rank Test}
 
 
 
