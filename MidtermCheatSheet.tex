@@ -110,10 +110,23 @@ Var(\bar{X}) =& \frac{\sigma^2}{n} \\
  \text{If X,Y are dependent}\\
 Var(X+Y) \ne& Var(X) + Var(Y)\\
 Var(X + Y) =& Var(X - Y)\\
-Var((a + bX) + (c + dY) =& b^2Var(X) + d^2Var(Y) + 2bdCov(X,Y)\\
+Var((a + bX) + (c + dY)) =& b^2Var(X) + d^2Var(Y) + 2bdCov(X,Y)\\
+Var(aX + bY) =& a^2 Var(X) + b^2(Y) + 2abCov(X,Y) \\
+	=& a^2 Var(X) + b^2(Y) + 2ab\sigma_x \sigma_y \rho_{xy}\\
 \end{align*}
 Quartiles split the data into 4 equal groups by number of values, or 25\% percentiles.
 Q2 is the median.
+
+\subsubsection{Study Design}
+
+Types of variables: categorical vs. quantitative, dummy, discrete vs continuous.
+Observational vs Experiments. Only experimentals can show causal effects.
+Key factors to an experiment: control group, randomized, and replicated. Usually 30 replications is sufficient.
+Avoid confounding by having cross-over groups.
+
+\textbf{Scope of Inference}: \textbf{Interval Validity}: low when 1) unaccounted confounding factors, 2) ignored missing data 3) noncompliance 4) unverified assumptions
+5) suboptimal method of analysis. Applicable when allocation of units to groups is random.
+ \textbf{External Validity}: high when can be generalized to population. Applicable when selection of units is random.
 
 
 \subsubsection{Covariance and Correlation}
@@ -126,6 +139,7 @@ Cor =& \frac{Cov}{\sigma_x \cdot \sigma_y}\\
 \end{align*}
 
 
+
 \subsubsection{Probabilities}
 $ 0 \leq $ All probabilities $ \leq 1 $\\
 \textit{Mutually exclusive and Exhaustive}\\
@@ -133,6 +147,8 @@ $ 0 \leq $ All probabilities $ \leq 1 $\\
 P(\overbar{A}) =& 1 - P(A)\\
 P(A \text{ or } B) =& P(A) + P(B) - P(A \text{ and } B)\\
 P(A \vert B) =& \frac{P(A \text{ and } B)}{P(B)}\\
+P(B) =& \sum_{i=1}^n P(B \cap A_i) = \sum_{i=1}^n P(B | A_i)((A_i)\\
+{n \choose k} =& \frac{n!}{k!(n-k)!} \\
 \end{align*}
 Joint vs. Marginal probabilities\\
 Independent if $P(A\vert B) = P(A)$\\
@@ -165,6 +181,8 @@ E(X+c) =& E(X) + c\\
 E(X+Y) =& E(X) + E(Y)\\
 \end{align*}
 
+If $X_1, \ldots , X_n \sim N(\mu, \sigma^2)$ then $\bar{X} \sim N(\mu_{\bar{X}} = \mu, \sigma^2_{\bar{X}} = \sigma^2/n)$. If pop dist is not normal, $S^2$ will eventually be Normal
+but may not be independent.
 
 
 \subsubsection{Bias of an Estimator}
@@ -200,11 +218,142 @@ Example: Roulette has a \$1 bet with a \$35 payoff for $\frac{1}{38}$ odds.
 E[\text{gain from a \$1 bet}] = -\$1 \cdot \frac{37}{38} + \$35 \cdot \frac{1}{38} = -\$0.0526
 \]
 
+
+\subsubsection{Uniform Distribution}
+\begin{align*}
+E(X) =& \frac{(a+b)}{2}\\
+Var(X) =& \frac{(b-a)^2}{12} \\
+\end{align*}
+\ \ $y$ axis should be a fraction to make area $=1$
+
+\subsubsection{Normal Distribution}
+\begin{align*}
+X \sim& \mathcal{N}(\mu,\sigma^2)\\
+Z = &\frac{X - \mu}{\sigma} \sim \mathcal{N}(0,1)\\
+X = &\sigma Z + \mu \\
+\Phi(z) =& \text{distribution} \\
+P(a \leq X \leq b) =& P[(a-\mu) \leq (X-\mu) \leq (b-\mu)]\\
+	= & P[\frac{(a-\mu)}{\sigma} \leq \frac{(X-\mu)} {\sigma} \leq \frac {(b-\mu)} {\sigma} ]\\
+	= & P[\frac{(a-\mu)}{\sigma} \leq Z \leq \frac {(b-\mu)} {\sigma} ]\\
+\end{align*}
+Linear combination of normals is normal. Used by CLT.
+
+
+\subsubsection{Binomial Distribution}
+
+\begin{itemize}
+\item{$n$ independent trials}
+\item{binary result}
+\item{same probability of success}
+\item{total number of successes}
+\end{itemize}
+\begin{align*}
+X \sim& Bin(n,p)\\
+\binom{n}{x} =& \frac{n!}{x!(n-x)!}\\
+P(X=x) =& \frac{n!}{x!(n-x)!}p^xq^{(n-x)}\\
+\mu_x = E(X) =& n \cdot p\\
+\sigma^2 = Var(X) =& n \cdot p \cdot q = n \cdot p \cdot (1-p)\\
+X \sim& N(\mu =np, \sigma = \sqrt{np(1-p)}) \\
+\hat{p} \sim& N(\mu = p, \sigma\sqrt{p(1-p)/n} ) \\
+\end{align*}
+Shape of distribution depends on $p,n$.\\
+Small $p$, left skewed. Large $p$, right skewed
+
+
+
+
+\subsection{Hypothesis Test - General}
+A \textbf{scientific hypothesis} makes a testable statement about the observable universe.
+
+A \textbf{statistical hypothesis} is more restricted. It concerns the behavior of a measurable (or observable) 
+random variable. It is often a statement or claim about a parameter of a population or distribution.
+
+\begin{enumerate}
+\item Formulate hypotheses ($H_0, H_a, \alpha$)
+\item Calculate test statistic and reference distrib.
+\item Calculate $p$-value based on reference distribution of test statistic $|H_0$. \textbf{$p$ value is NOT the probability that the null hypothesis is true.} 
+It is probablity of seeing our data on the null hypothesis. 
+\item Determine conclusion and scope of inference
+\end{enumerate}
+\textbf{Note:} $t$ values are measures of \textit{distance}. $p$ values are measure of \textit{probability}. Assumptions? Independence? Distribution of Observations? Parametric vs. non-parametric?
+
+\begin{tabular}{ c  c }
+Hypotheses & Decision Rule \\
+\hline
+$H_0 : \mu = \mu_0$ \\      $H_a : \mu \neq \mu_0$ & If $|t_{stat}| > 1.96$, reject $H_0$ \\
+ & \\
+$H_0 : \mu = \mu_0$ \\ $H_a : \mu < \mu_0$      & If $t_{stat} < -1.64$, reject $H_0$ \\
+ & \\
+$H_0 : \mu = \mu_0$ \\ $H_a : \mu > \mu_0$      & If $t_{stat} > 1.64$, reject $H_0$ \\
+\end{tabular}
+
+
+Assumptions:
+\begin{enumerate}
+\item Observations are \textbf{independent}. This is true if the sample is randomly selected, but false if there is bias in the sampling.
+\item \textbf{Normal Distributions} of the observations. This happens when the sample is large enough (via the Central Limit Theorm) or it is known that the population is normally distributed.
+\end{enumerate}
+
+If these assumptions are not correct, none of the $t$-tests will work correctly.
+
+
+\subsubsection{Hypothesis Test - Mean}
+
+Calculation by hand using a $t$ test:
+\begin{align*}
+t_{stat} =& \frac{ \overbar{x} - \mu_0  } { s / \sqrt{n}  } \\
+\end{align*}
+
+
+
+\subsection{Fisher's Randomization Test}
+
+For casual inference in experiments. No assumption as to the underlying distribution has to be made. Generally, is $\mu_1 = \mu_2$? 
+
+The only assumption is Additive Treatment Effect ($\delta$):
+\[
+Y_{c,i} = Y_{v,i} + \delta
+\]
+
+$H_0: \delta = 0$, ie  zero treatment effect for all units. $H_a: \delta \neq 0$ non-zero treatment effect for ALL units. Reference distrib built through simulation. Non-parametric.
+
+Assumptions:
+\begin{itemize}
+\item Random assignment to groups
+\item Under $H_0$, \textit{independence, interchangability} of study units. 
+\end{itemize}
+
+Test Statistic: Difference of outcomes of the two groups: (could also use difference between the medians)
+\[
+\hat{\delta} = \overbar{Y}_c - \overbar{Y}_v
+\]
+
+The maximum number of possible simulations is the binomial distribution:
+\[{t \choose s}\]
+where $t$ is the total number of study units and $s$ is the number where the effect was shown.
+
+Calculating $p$ value: The $p$ value is proportion of values above or below the observed test statistic.
+\begin{align*}
+\hat{\delta} =& 0.5\\
+p =& P(\overbar{Y}_c - \overbar{Y}_v \geq \overbar{y}_c - \overbar{y}_v) \\
+   =& P(\overbar{Y}_c - \overbar{Y}_v \geq 0.5) = 0.029
+\end{align*}
+
+so there is sufficient evidence to reject the null.
+
+Scope of inference: Internal Validity maybe not if the same hospital. External validity: possibly not, as these were volunteers.
+
+\subsubsection{Permutation Test}
+For observational studies, comparing two groups - for generalization. Means of observations are presumed the same $E(Y_{1,i}) = \mu_1, E(Y_{2,j}) = \mu_2. H_0  : \mu_1 = \mu_2$.
+
+Test stat: $\hat{D} = \bar{Y}_i - \bar{Y}_1$. Reference distrib by simulation. 
+Assumes independence of study units and groups, nonparametric. Does assume similar shapes and spreads.
+
 \subsubsection{All Things $\chi^2$}
 
 \begin{align*}
 \chi^2_1 =& Z^2 \\
-\chi^2_n =& \sum\limits_{i=1}^n Z^2 \\
+\chi^2_n =& \sum\limits_{i=1}^n Z^2_i \\
 t_n =& \frac{Z} {\sqrt{\chi^2_n / n} } \\
 F_{n,m} =& \frac{ \chi^2_n / n} { \chi^2_m / m } \\
 \chi^2_{n+m} =& \chi^2_n + \chi^2_m \\
@@ -226,7 +375,7 @@ Z = \frac{\overbar{X} - \mu}{\sigma / \sqrt{n}}
 \]
 but we don't know $\sigma$ so in practice we use
 \[
-T = \frac{\overbar{X} - \mu}{S / \sqrt{n}}
+T = \frac{\overbar{X} - \mu}{S / \sqrt{n}} \sim t_{n-1}
 \]
 (which has two random variables ($\overbar{X}$ and $S$). Now, take that previous definition of $T$ and add $\sigma/\sqrt{n}$ to the top and bottom:
 
@@ -238,54 +387,8 @@ T =& \frac{\overbar{X} - \mu}{S / \sqrt{n}} \\
  =&  \frac{Z}{\sqrt{\chi^2/df}}\text{, since }\chi^2 = \frac{(n-1)S^2}{\sigma^2}
 \end{align*}
 
-\subsection{Hypothesis Test - General}
+Assumptions: 1) Observations are independent (randomly selected), 2) Normal distrib of observations (either $>30$ via CLT or pop. is known $ \sim N(\mu,\sigma^2)$).
 
-\begin{enumerate}
-\item Formulate hypotheses
-\item Calculate test statistic
-\item Calculate $p$-value based on reference distribution of test statistic $|H_0$. \textbf{$p$ value is NOT the probability that the null hypothesis is true.} 
-It is probablity of seeing our data on the null hypothesis. 
-\item Determine conclusion and scope of inference
-\end{enumerate}
-\textbf{Note:} $t$ values are measures of \textit{distance}. $p$ values are measure of \textit{probability}.
-
-\begin{tabular}{ c  c }
-Hypotheses & Decision Rule \\
-\hline
-$H_0 : \mu = \mu_0$ \\      $H_a : \mu \neq \mu_0$ & If $|t_{stat}| > 1.96$, reject $H_0$ \\
- & \\
-$H_0 : \mu = \mu_0$ \\ $H_a : \mu < \mu_0$      & If $t_{stat} < -1.64$, reject $H_0$ \\
- & \\
-$H_0 : \mu = \mu_0$ \\ $H_a : \mu > \mu_0$      & If $t_{stat} > 1.64$, reject $H_0$ \\
-\end{tabular}
-
-\textbf{Scope of Inference}: \textbf{Interval Validity}: low when 1) unaccounted confounding factors, 2) ignored missing data 3) noncompliance 4) unverified assumptions
-5) suboptimal method of analysis. Applicable when allocation of units to groups is random.
- \textbf{External Validity}: high when can be generalized to population. Applicable when selection of units is random.
-
-Assumptions:
-\begin{enumerate}
-\item Observations are \textbf{independent}. This is true if the sample is randomly selected, but false if there is bias in the sampling.
-\item \textbf{Normal Distributions} of the observations. This happens when the sample is large enough (via the Central Limit Theorm) or it is known that the population is normally distributed.
-\end{enumerate}
-
-If these assumptions are not correct, none of the $t$-tests will work correctly.
-
-
-\subsubsection{Hypothesis Test - Mean}
-
-Calculation by hand using a $t$ test:
-\begin{align*}
-t_{stat} =& \frac{ \overbar{x} - \mu_0  } { s / \sqrt{n}  } \\
-\end{align*}
-
-\subsection{Types of Errors}
-\begin{description}
-\item[Type I]the null hypothesis is rejected when it is true
-\item[Type II] the null hypothesis is accepted when it is false
-\end{description}
-$\alpha$ is \textit{level of significance} - probability of making a Type I error. The greater the cost of an error, the smaller $\alpha$ should be.
-$\beta$ is the probability of making a Type II error. There is an inverse relation between Type I and II errors. Reducing one increases the other. The only way to reduce both is to increase $n$ the sample size.
 
 
 \subsubsection{Confidence Intervals}
@@ -301,10 +404,44 @@ As long as $n > 30$, it doesn't matter if the sample size is different between t
 
 To find the 95\% Confidence Internval for the \textbf{true mean} $\mu$:
 \[
-\overbar{x} \pm t^* (s/\sqrt{n})
+\overbar{x} \pm t^*_{df=n-1} (s/\sqrt{n})
 \]
 
-$t^*$ has to be looked up
+$t^*$ has to be looked up based on the reference distrib.
+
+
+
+\subsection{Types of Errors}
+\begin{description}
+\item[Type I]the null hypothesis is rejected when it is true
+\item[Type II] the null hypothesis is accepted when it is false
+\end{description}
+$\alpha$ is \textit{level of significance} - probability of making a Type I error. The greater the cost of an error, the smaller $\alpha$ should be.
+$\beta$ is the probability of making a Type II error. There is an inverse relation between Type I and II errors. Reducing one increases the other. The only way to reduce both is to increase $n$ the sample size.
+
+\subsection{Pooled Two Sample $t$-Test}
+\textbf{assumes equal variances}, different means, all observations are independent, random, $> 30$ or known normal distrib. 
+\begin{align*}
+H_0 :& \mu_1 - \mu_2 = 0 \\
+T =& \frac{(\bar{x}_1 - \bar{x}_2) - (\mu_1 - \mu_2 | H_0) } {S_p \sqrt{\frac{1}{n_1} + \frac{1}{n_2}  } } \\
+T  \sim& t_{df = n_1 + n_2 - 2} \\
+CI: & (\bar{x}_1 = \bar{x}_2) \pm t^* \bigg(S_p \sqrt{\frac{1}{n_1} + \frac{1}{n_2}     }   \bigg) \\
+S_p^2 &= \frac {(n_1 - 1)S_1^2) + (n_2 - 1)S^2_2  } { n_1 + n_2 -2 } \\
+\end{align*}
+
+Do not use if $\frac{S^2_1} {S^2_2} \geq 2$.
+
+\subsection{Unpooled Two Sample $t$-Test}
+\textbf{assumes unequal variances}, all observations independent, random, $> 30$ or known normal distrib. 
+\begin{align*}
+H_0 :& \mu_1 - \mu_2 = 0 \\
+T =& \frac{(\bar{x}_1 - \bar{x}_2) - (\mu_1 - \mu_2 | H_0) } {\sqrt{\frac{S^2_1}{n_1} + \frac{S^2_2}{n_2}  } } \\
+T  \sim& t_{df = min(n_1,n_2) - 1} \\
+CI: & (\bar{x}_1 = \bar{x}_2) \pm t^* \bigg(S_p \sqrt{\frac{S^2_1}{n_1} + \frac{S^2_2}{n_2}    }    \bigg) \\
+\end{align*}
+
+Advantage Pooling: slightly more power to detect a difference. Disadvantage pooling: extra assumption could be wrong, with a high type I error rate.
+
 
 \subsubsection{Comparing Two Proportions}
 \[
@@ -322,19 +459,6 @@ T = \frac{(\hat{p}_1 - \hat{p}_2) }  { \sqrt{ \hat{p}(1-\hat{p}) (\frac{1}{n_1} 
 \]
 $\hat{p}$ is called the \textit{pooled proportion}.
 
-\subsubsection{Comparing Two Means}
-Requirements:
-\begin{enumerate}
-\item{$\sigma_1$ and $\sigma_2$ are unknown. No assumption made about their equality.}
-\item{The two samples are independent.}
-\item{Both samples are simple random samples.}
-\item{The two samples size are both large (ie. $> 30$) or both populations have normal distributions.}
-\end{enumerate}
-
-A confidence interval for $(\mu_1 - \mu_2 )$ is
-\[
-(\overbar{x}_1 - \overbar{x}_2) \pm 1.96 \sqrt{ \frac{s^2_1 } {n_1 } + \frac{s^2_2 } {n_2 }     }
-\]
 
 \subsubsection{Comparing Two Normal Distributions}
 
@@ -364,97 +488,13 @@ H_0 : & \mu_D = 0 \\
 H_a : & \mu_D > 0 \\
 \end{align*}
 
+\subsection{Assumptions}
+
+Robustness: able to be useful when assumptions are violated. 
 
 
-\subsubsection{Uniform Distribution}
-\begin{align*}
-E(X) =& \frac{(a+b)}{2}\\
-Var(X) =& \frac{(b-a)^2}{12} \\
-\end{align*}
-\ \ $y$ axis should be a fraction to make area $=1$
-
-\subsubsection{Normal Distribution}
-\begin{align*}
-X \sim& \mathcal{N}(\mu,\sigma^2)\\
-Z = &\frac{X - \mu}{\sigma} \sim \mathcal{N}(0,1)\\
-X = &\sigma Z + \mu \\
-P(a \leq X \leq b) =& P[(a-\mu) \leq (X-\mu) \leq (b-\mu)]\\
-	= & P[\frac{(a-\mu)}{\sigma} \leq \frac{(X-\mu)} {\sigma} \leq \frac {(b-\mu)} {\sigma} ]\\
-	= & P[\frac{(a-\mu)}{\sigma} \leq Z \leq \frac {(b-\mu)} {\sigma} ]\\
-\end{align*}
 
 
-\subsubsection{Binomial Distribution}
-\begin{itemize}
-\item{$n$ independent trials}
-\item{binary result}
-\item{same probability of success}
-\item{total number of successes}
-\end{itemize}
-\begin{align*}
-X \sim& Bin(n,p)\\
-\binom{n}{x} =& \frac{n!}{x!(n-x)!}\\
-P(X=x) =& \frac{n!}{x!(n-x)!}p^xq^{(n-x)}\\
-\mu_x = E(X) =& n \cdot p\\
-\sigma^2 = Var(X) =& n \cdot p \cdot q = n \cdot p \cdot (1-p)\\
-\end{align*}
-Shape of distribution depends on $p,n$.\\
-Small $p$, left skewed. Large $p$, right skewed
-
-
-\subsection{Fisher's Randomization Test}
-
-Randomization Test is for experiments - for casual inference.
-
-Permutation Tests are for observational studies - for generalization.
-
-Fisher Randomization Test is a \textit{distribution free} test for treatment effect in \textbf{randomized experiments}. No assumption as to the underlying distribution has to be made. Generally, is $\mu_1 = \mu_2$? 
-
-The only assumption is Additive Treatment Effect ($\delta$):
-\[
-Y_{c,i} = Y_{v,i} + \delta
-\]
-
-$H_0: \delta = 0$, ie  zero treatment effect for all units. Each unit's outcome is the same regardless of the treatment assigned. So the distribution would be identical in both groups.
-
-$H_a: \delta \neq 0$ non-zero treatment effect for ALL units. 
-
-Assumptions:
-\begin{itemize}
-\item Random assignment to groups
-\item Under $H_0$, \textit{independence, interchangability} of study units. 
-\end{itemize}
-
-\subsubsection{Test Statistic}
-
-Difference of outcomes of the two groups:
-\[
-\hat{\delta} = \overbar{Y}_c - \overbar{Y}_v
-\]
-could also use difference between the medians.
-
-\textbf{Randomization Distribution} is the reference distribution of a test statistic in a randomization test,
-where variation is due to random assignment of the treatment.
-
-Procedure:
-$Y$ is values of malaria. $X$ is if someone is vaccinated. Simulate a new $X^*$ with the same values as $X$ but \textit{in a different order}, leaving the same $Y$. Repeat multiple times to simulate and build the histogram. This will show if the distribution is extreme.
-
-The maximum number of possible simulations is the binomial distribution:
-\[{t \choose s}\]
-where $t$ is the total number of study units and $s$ is the number where the effect was shown.
-
-\subsubsection{Calculating $p$ value}
- 
-The $p$ value is proportion of values above or below the observed test statistic.
-\begin{align*}
-\hat{\delta} =& 0.5\\
-p =& P(\overbar{Y}_c - \overbar{Y}_v \geq \overbar{y}_c - \overbar{y}_v) \\
-   =& P(\overbar{Y}_c - \overbar{Y}_v \geq 0.5) = 0.029
-\end{align*}
-
-so there is sufficient evidence to reject the null.
-
-Scope of inference: Internal Validity maybe not if the same hospital. External validity: possibly not, as these were volunteers.
 
 
 % You can even have references
